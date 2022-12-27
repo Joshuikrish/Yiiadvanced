@@ -1,0 +1,108 @@
+AddDefaultCharset UTF-8
+DefaultLanguage en-US
+
+Options -Indexes
+Options +FollowSymlinks
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # For Backend
+    RewriteCond %{REQUEST_URI} ^/yii2advanced/(app)
+    RewriteRule ^app/assets/(.*)$ backend/web/assets/$1 [L]
+    RewriteRule ^app/resources/(.*)$ backend/web/resources/$1 [L]
+    RewriteRule ^app/css/(.*)$ backend/web/css/$1 [L]
+    RewriteRule ^app/images/(.*)$ backend/web/images/$1 [L]
+    RewriteRule ^app/js/(.*)$ backend/web/js/$1 [L]
+
+    RewriteCond %{REQUEST_URI} !^/yii2advanced/backend/web/(assets|resources|css|images|js)/
+    RewriteCond %{REQUEST_URI} ^/yii2advanced/(app)
+    RewriteRule ^.*$ backend/web/index.php [L]
+
+    # For Frontend
+    RewriteCond %{REQUEST_URI} ^/yii2advanced/(assets|resources|css|images|js)
+    RewriteRule ^assets/(.*)$ frontend/web/assets/$1 [L]
+    RewriteRule ^resources/(.*)$ frontend/web/resources/$1 [L]
+    RewriteRule ^css/(.*)$ frontend/web/css/$1 [L]
+    RewriteRule ^images/(.*)$ frontend/web/images/$1 [L]
+    RewriteRule ^js/(.*)$ frontend/web/js/$1 [L]
+
+    RewriteCond %{REQUEST_URI} !^/yii2advanced/(frontend|backend)/web/(assets|resources|css|images|js)/
+    RewriteCond %{REQUEST_URI} !^/yii2advanced/common/
+
+    RewriteCond %{REQUEST_URI} !index.php
+    RewriteCond %{REQUEST_FILENAME} !-f [OR]
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^.*$ frontend/web/index.php
+</IfModule>
+
+# Enable GZIP
+#<IfModule mod_deflate.c>
+#  # Compress HTML, CSS, JavaScript, Text, XML and fonts
+#  AddOutputFilterByType DEFLATE application/javascript
+#  AddOutputFilterByType DEFLATE application/rss+xml
+#  AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+#  AddOutputFilterByType DEFLATE application/x-font
+#  AddOutputFilterByType DEFLATE application/x-font-opentype
+#  AddOutputFilterByType DEFLATE application/x-font-otf
+#  AddOutputFilterByType DEFLATE application/x-font-truetype
+#  AddOutputFilterByType DEFLATE application/x-font-ttf
+#  AddOutputFilterByType DEFLATE application/x-javascript
+#  AddOutputFilterByType DEFLATE application/xhtml+xml
+#  AddOutputFilterByType DEFLATE application/xml
+#  AddOutputFilterByType DEFLATE font/opentype
+#  AddOutputFilterByType DEFLATE font/otf
+#  AddOutputFilterByType DEFLATE font/ttf
+#  AddOutputFilterByType DEFLATE image/svg+xml
+#  AddOutputFilterByType DEFLATE image/x-icon
+#  AddOutputFilterByType DEFLATE text/css
+#  AddOutputFilterByType DEFLATE text/html
+#  AddOutputFilterByType DEFLATE text/javascript
+#  AddOutputFilterByType DEFLATE text/plain
+#  AddOutputFilterByType DEFLATE text/xml
+#
+#  # Remove browser bugs (only needed for really old browsers)
+#  BrowserMatch ^Mozilla/4 gzip-only-text/html
+#  BrowserMatch ^Mozilla/4\.0[678] no-gzip
+#  BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+#  Header append Vary User-Agent
+#</IfModule>
+#<IfModule mod_gzip.c>
+#  mod_gzip_on Yes
+#  mod_gzip_dechunk Yes
+#  mod_gzip_item_include file .(html?|txt|css|js|php|pl)$
+#  mod_gzip_item_include handler ^cgi-script$
+#  mod_gzip_item_include mime ^text/.*
+#  mod_gzip_item_include mime ^application/x-javascript.*
+#  mod_gzip_item_exclude mime ^image/.*
+#  mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+#</IfModule>
+
+# Leverage Browser Caching
+#<IfModule mod_expires.c>
+#  ExpiresActive On
+#  ExpiresByType image/jpg "access 1 year"
+#  ExpiresByType image/jpeg "access 1 year"
+#  ExpiresByType image/gif "access 1 year"
+#  ExpiresByType image/png "access 1 year"
+#  ExpiresByType text/css "access 1 month"
+#  ExpiresByType text/html "access 1 month"
+#  ExpiresByType application/pdf "access 1 month"
+#  ExpiresByType text/x-javascript "access 1 month"
+#  ExpiresByType application/x-shockwave-flash "access 1 month"
+#  ExpiresByType image/x-icon "access 1 year"
+#  ExpiresDefault "access 1 month"
+#</IfModule>
+#<IfModule mod_headers.c>
+#  <filesmatch "\.(ico|flv|jpg|jpeg|png|gif|css|swf)$">
+#  Header set Cache-Control "max-age=2678400, public"
+#  </filesmatch>
+#  <filesmatch "\.(html|htm)$">
+#  Header set Cache-Control "max-age=7200, private, must-revalidate"
+#  </filesmatch>
+#  <filesmatch "\.(pdf)$">
+#  Header set Cache-Control "max-age=86400, public"
+#  </filesmatch>
+#  <filesmatch "\.(js)$">
+#  Header set Cache-Control "max-age=2678400, private"
+#  </filesmatch>
+#</IfModule>
